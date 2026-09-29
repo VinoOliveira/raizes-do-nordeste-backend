@@ -7,7 +7,6 @@ Cobre autenticação com perfis, cardápio e estoque por unidade, pedidos multic
 
 ## Links
 
-- Repositório: https://github.com/SEU-USUARIO/raizes-do-nordeste-backend
 - Swagger (local): http://localhost:8000/docs
 - Coleção Postman: [`postman/raizes-do-nordeste.postman_collection.json`](postman/raizes-do-nordeste.postman_collection.json)
 - DER: [`docs/DER.png`](docs/DER.png) (PDF em [`docs/DER.pdf`](docs/DER.pdf))
@@ -23,13 +22,13 @@ Cobre autenticação com perfis, cardápio e estoque por unidade, pedidos multic
 
 ## Requisitos
 
-- Python 3.12 (usar 3.12; versões mais novas podem não ter pacotes pré-compilados para as dependências fixadas)
+- Python 3.12 (usar 3.12, versões mais novas podem não ter pacotes pré-compilados para as dependências fixadas)
 - Git
 
 ## Instalação
 
 ```powershell
-git clone https://github.com/SEU-USUARIO/raizes-do-nordeste-backend.git
+git clone [https://github.com/SEU-USUARIO/raizes-do-nordeste-backend.git](https://github.com/VinoOliveira/raizes-do-nordeste-backend)
 cd raizes-do-nordeste-backend
 py -3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
