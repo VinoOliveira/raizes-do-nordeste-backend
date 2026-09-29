@@ -28,7 +28,7 @@ Cobre autenticação com perfis, cardápio e estoque por unidade, pedidos multic
 ## Instalação
 
 ```powershell
-git clone [https://github.com/SEU-USUARIO/raizes-do-nordeste-backend.git](https://github.com/VinoOliveira/raizes-do-nordeste-backend)
+git clone https://github.com/VinoOliveira/raizes-do-nordeste-backend
 cd raizes-do-nordeste-backend
 py -3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
