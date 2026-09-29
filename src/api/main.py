@@ -5,7 +5,7 @@ from src.config import settings
 from src.infrastructure.db.session import Base, engine
 from src.infrastructure.db import models  # noqa: F401
 from src.api.error_handlers import register_exception_handlers
-from src.api.v1 import auth, usuarios, unidades, produtos, estoque, pedidos, pagamentos, fidelidade
+from src.api.v1 import auth, usuarios, unidades, produtos, estoque, pedidos, pagamentos, fidelidade, auditoria
 
 Base.metadata.create_all(bind=engine)
 
@@ -28,6 +28,7 @@ app.include_router(estoque.router)
 app.include_router(pedidos.router)
 app.include_router(pagamentos.router)
 app.include_router(fidelidade.router)
+app.include_router(auditoria.router)
 
 
 @app.get("/")

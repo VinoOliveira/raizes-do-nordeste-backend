@@ -53,3 +53,17 @@ def test_resgate_de_pontos(client, auth_cliente, criar_pedido, cliente_id):
     r = client.post(f"/fidelidade/{cliente_id}/resgatar", headers=auth_cliente, json={"pontos": 3})
     assert r.status_code == 200
     assert r.json()["saldoRestante"] == 1
+
+
+def test_cardapio_por_unidade_lista_apenas_produtos_com_estoque(client, auth_gerente):
+    assert len(client.get("/produtos?unidadeId=1").json()) == 5
+    client.post("/estoque/movimentos", headers=auth_gerente, json={
+        "unidadeId": 1, "produtoId": 4, "tipo": "SAIDA", "quantidade": 50,
+    })
+    nomes = [p["nome"] for p in client.get("/produtos?unidadeId=1").json()]
+    assert "Suco de caju" not in nomes
+    assert len(client.get("/produtos?unidadeId=2").json()) == 5
+
+
+def test_cardapio_de_unidade_inexistente_retorna_404(client):
+    assert client.get("/produtos?unidadeId=999").status_code == 404

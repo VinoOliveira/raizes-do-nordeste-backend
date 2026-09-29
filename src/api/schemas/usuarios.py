@@ -15,3 +15,4 @@ class UsuarioResponse(BaseModel):
     email: str
     perfil: str
     consentimentoLGPD: bool
+    clienteId: int | None = None

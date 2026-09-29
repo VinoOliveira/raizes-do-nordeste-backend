@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 
 from src.infrastructure.db.session import get_db
-from src.infrastructure.db.models import Produto
+from src.infrastructure.db.models import Produto, Unidade, EstoqueUnidade
 from src.api.schemas.catalogo import ProdutoCreateRequest, ProdutoResponse
 from src.api.deps import require_perfis
 from src.domain.entities import RecursoNaoEncontradoError
@@ -16,9 +16,15 @@ def _to_response(p: Produto) -> ProdutoResponse:
 
 
 @router.get("", response_model=list[ProdutoResponse])
-def listar(db: Session = Depends(get_db)):
-    produtos = db.execute(select(Produto).where(Produto.ativo == True)).scalars().all()
-    return [_to_response(p) for p in produtos]
+def listar(unidadeId: int | None = None, db: Session = Depends(get_db)):
+    query = select(Produto).where(Produto.ativo == True)
+    if unidadeId is not None:
+        if not db.get(Unidade, unidadeId):
+            raise RecursoNaoEncontradoError(f"Unidade {unidadeId} não encontrada.")
+        query = query.join(EstoqueUnidade, EstoqueUnidade.produto_id == Produto.id).where(
+            EstoqueUnidade.unidade_id == unidadeId, EstoqueUnidade.quantidade > 0
+        )
+    return [_to_response(p) for p in db.execute(query).scalars().all()]
 
 
 @router.post("", response_model=ProdutoResponse, status_code=status.HTTP_201_CREATED,

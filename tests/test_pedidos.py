@@ -92,3 +92,20 @@ def test_criar_pedido_gera_log_de_auditoria(criar_pedido):
     with SessionLocal() as db:
         log = db.query(LogAuditoria).filter_by(acao="CRIACAO_PEDIDO", entidade_id=str(pedido_id)).first()
     assert log is not None
+
+
+def test_gerente_consulta_auditoria_do_pedido(client, auth_gerente, auth_cozinha, criar_pedido):
+    pedido_id = criar_pedido().json()["pedidoId"]
+    client.patch(f"/pedidos/{pedido_id}/status", headers=auth_cozinha, json={"novoStatus": "CANCELADO"})
+    r = client.get(f"/auditoria?entidade=Pedido&entidadeId={pedido_id}", headers=auth_gerente)
+    assert r.status_code == 200
+    acoes = {i["acao"] for i in r.json()["items"]}
+    assert acoes == {"CRIACAO_PEDIDO", "ATUALIZACAO_STATUS_PEDIDO"}
+
+
+def test_cliente_nao_acessa_auditoria(client, auth_cliente):
+    assert client.get("/auditoria", headers=auth_cliente).status_code == 403
+
+
+def test_usuarios_me_retorna_cliente_id(client, auth_cliente, cliente_id):
+    assert client.get("/usuarios/me", headers=auth_cliente).json()["clienteId"] == cliente_id

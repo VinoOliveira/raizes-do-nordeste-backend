@@ -14,6 +14,7 @@ def _to_response(usuario: Usuario) -> UsuarioResponse:
     return UsuarioResponse(
         id=usuario.id, nome=usuario.nome, email=usuario.email,
         perfil=usuario.perfil.value, consentimentoLGPD=usuario.consentimento_lgpd,
+        clienteId=usuario.cliente.id if usuario.cliente else None,
     )
 
 
